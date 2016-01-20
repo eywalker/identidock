@@ -2,7 +2,7 @@ from flask import Flask, Response, request
 import requests
 import hashlib
 import redis
-import logging
+import html
 
 
 app = Flask(__name__)
@@ -15,7 +15,7 @@ default_name = 'Edgar Y. Walker'
 def mainpage():
     name = default_name
     if request.method == 'POST':
-        name = request.form['name']
+        name = html.escape(request.form['name'], quote=True)
 
     salted_name = salt + name
     name_hash = hashlib.sha256(salted_name.encode()).hexdigest()
